@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/chrome-manifest.json",
+  "manifest_version": 3,
+  "name": "Chrome Extension Vite Template",
+  "description": "A vite template for chrome extension build",
+  "version": "1.0",
+  "background": {
+    "service_worker": "src/background.ts",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Chrome Extension Vite Template",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://example.com/*"],
+      "css": ["src/content/index.less"],
+      "js": ["src/content/index.ts"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["https://example.com/*"],
+      "resources": ["src/injects/index.ts"]
+    }
+  ]
+}
