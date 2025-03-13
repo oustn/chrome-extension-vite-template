@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import zipPack from 'vite-plugin-zip-pack'
@@ -19,10 +20,14 @@ const archiveName = process.env.EXTENSION_VERSION
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  console.log(mode)
   const isDev = mode === 'development'
 
   return {
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    },
     plugins: [
       react(),
       tailwindcss(),
