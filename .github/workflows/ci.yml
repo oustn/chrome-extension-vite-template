@@ -1,0 +1,84 @@
+name: Auto Release Workflow
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  create-dev-to-main-pr:
+    if: github.ref == 'refs/heads/alpha'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request from dev to main
+        id: create-pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: dev
+          title: "Auto-merge dev into main"
+          body: "This PR is automatically created to merge dev into main after an alpha release."
+          labels: release, automated
+          draft: false
+
+  auto-approve-and-merge:
+    needs: create-dev-to-main-pr
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for checks to pass
+        uses: hmarr/wait-for-status-check@v1
+        with:
+          check-name: "CI/CD"
+          timeout: 300
+
+      - name: Auto-approve PR
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ needs.create-dev-to-main-pr.outputs.pull-request-number }}
+          merge-method: rebase # 可选: squash, merge, rebase
+
+  cleanup-and-recreate-branches:
+    needs: auto-approve-and-merge
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete alpha branch if exists
+        run: |
+          if git ls-remote --exit-code --heads origin alpha; then
+            gh api -X DELETE /repos/${{ github.repository }}/git/refs/heads/alpha
+          fi
+
+      - name: Delete dev branch if exists
+        run: |
+          if git ls-remote --exit-code --heads origin dev; then
+            gh api -X DELETE /repos/${{ github.repository }}/git/refs/heads/dev
+          fi
+
+      - name: Recreate alpha branch from main
+        uses: peter-evans/create-branch@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: alpha
+          base: main
+
+      - name: Recreate dev branch from main
+        uses: peter-evans/create-branch@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
+          base: main
