@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsc -b && vite build --mode development --watch",
+    "dev": "cross-env NODE_ENV=development vite build --mode development --watch",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "prettier . --write && eslint . --fix",
@@ -37,7 +37,11 @@
     "@types/node": "22.13.9",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/ws": "^8.18.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "cheerio": "^1.0.0",
+    "chokidar": "^4.0.3",
+    "cross-env": "^7.0.3",
     "crx": "^5.0.1",
     "esbuild": "0.25.0",
     "eslint": "^9.21.0",
@@ -58,7 +62,8 @@
     "typescript": "~5.8.0",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0",
-    "vite-plugin-zip-pack": "^1.2.4"
+    "vite-plugin-zip-pack": "^1.2.4",
+    "ws": "^8.18.1"
   },
   "volta": {
     "node": "22.14.0",

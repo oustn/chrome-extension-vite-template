@@ -9,6 +9,7 @@ import {
   createManifestPlugin,
   createIconPlugin,
   crxPack,
+  createHmr,
 } from './build/plugins'
 import packageJson from './package.json'
 
@@ -31,6 +32,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
+      createHmr(),
       createManifestPlugin(),
       createIconPlugin('public/vite.svg'),
       !isDev &&

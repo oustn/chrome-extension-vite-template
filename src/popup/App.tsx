@@ -25,6 +25,12 @@ function App() {
     setMode(newMode)
   }
 
+  const handleExample = async () => {
+    return chrome.tabs.create({
+      url: 'https://example.com',
+    })
+  }
+
   return (
     <Container sx={{ minWidth: 320 }}>
       <Box className="text-right" sx={{ p: 2 }}>
@@ -81,7 +87,7 @@ function App() {
         sx={{ paddingBlock: 2 }}
         color="textDisabled"
       >
-        Click on the Vite and React logos to learn more
+        <Button onClick={handleExample}>https://example.com</Button>
       </Typography>
     </Container>
   )
