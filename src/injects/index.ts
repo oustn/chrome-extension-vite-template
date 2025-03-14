@@ -4,4 +4,4 @@ import { App } from './App'
 const div = document.createElement('div')
 document.body.appendChild(div)
 
-Renderer(App, div)
+Renderer(App, div, true)
