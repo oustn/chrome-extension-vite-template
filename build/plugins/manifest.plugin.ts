@@ -105,7 +105,7 @@ function collectionWebAccessibleResources(
       })
     }
   })
-  return resources
+  return resources.filter((d) => d.resources.length)
 }
 
 export function createManifestPlugin(): Plugin {
