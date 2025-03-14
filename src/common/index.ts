@@ -1,3 +1,1 @@
-export function greeting(name: string) {
-    console.log(`${name}, hello world!`)
-}
+export * from './post-robot'

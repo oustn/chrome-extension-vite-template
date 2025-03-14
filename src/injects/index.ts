@@ -1,9 +1,7 @@
-import _, {isArray} from 'lodash'
-import { greeting } from "../common"
-import svg from '../assets/vite.svg?no-inline'
+import { Renderer } from '@/components'
+import { App } from './App'
 
-greeting('inject')
+const div = document.createElement('div')
+document.body.appendChild(div)
 
-console.log(svg)
-
-console.log(_, isArray)
+Renderer(App, div)
