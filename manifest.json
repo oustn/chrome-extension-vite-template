@@ -8,6 +8,7 @@
     "service_worker": "src/background.ts",
     "type": "module"
   },
+  "permissions": ["tabs"],
   "action": {
     "default_title": "Chrome Extension Vite Template",
     "default_popup": "popup.html"
